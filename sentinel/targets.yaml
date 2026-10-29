@@ -31,12 +31,25 @@ targets:
     url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/changes.html"
     frequency: daily
     verified: true
-    last_verified: "2026-10-29"
+    last_verified: "2026-10-30"
     keywords: ["November 3", "job offer", LMIA, "high-wage", "labour market", points, effective, PIP]
     notes: >
       2026-11-03 CRS 新政（劳动力市场整合因子 / LMIA 取消）的实施页。
       新政落地时此页更新或切换——哨兵捕获后触发 docs/nov3-verification-checklist.md 核对流程。
-      2026-10-29 经 WebFetch 实测可达（本地网络除外，同 ircc_ee_rounds 处理）。
+      2026-10-30 二次核验：细节无修订，生效日仍为 2026-11-03。
+
+  - id: ircc_high_wage
+    country: canada
+    name: IRCC high-wage occupations list
+    url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/high-wage.html"
+    frequency: weekly
+    verified: true
+    last_verified: "2026-10-30"
+    keywords: ["high-wage", NOC, "median wage", tier, "2x", "1.5x", "1.3x"]
+    notes: >
+      2026-11-03 新政的 high-wage 职业清单页（按档位分类的 NOC 清单）。
+      档位/清单更新时哨兵捕获——影响 rules/canada/ee_crs.yaml 的 high_wage_points。
+      2026-10-30 经 WebFetch 核验（页面较大抓取超时，纳入 weekly 低频监控）。
 
   - id: homeaffairs_skillselect
     country: australia

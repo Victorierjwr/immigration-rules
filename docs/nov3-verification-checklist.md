@@ -18,7 +18,7 @@
 | 2 | crs-criteria.html 切换为新表 | 页面出现 job offer 分档（100/70/50）、劳动力市场整合因子说明 | 见下 |
 | 3 | 邀请轮恢复 | recalc 完成、新一轮 draws 出现 | cutoff 种子数据更新时点 |
 | 4 | 官方计算器上线 | IRCC 在线计算器支持新 regime | golden 期望值与新计算器交叉验证（官方算例回归升级） |
-| 5 | high-wage 职业清单 | NOC 级 high-wage 清单发布 | 若发布 → 评估是否入库（high-wage 加分 70/40/20） |
+| 5 | high-wage 职业清单 | NOC 级 high-wage 清单发布 | ✅ 已发布（check-score/high-wage.html，按档位分类）——分档规则已入库（70/40/20，用户自查档位）；清单变更由哨兵 ircc_high_wage 目标监控 |
 
 ## 第三遍：规则库处置（按 SOP）
 

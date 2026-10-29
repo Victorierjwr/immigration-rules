@@ -29,9 +29,10 @@ scoring:
   regime_switch:
     date: "2026-11-03"
     new_job_offer_points: {"2x": 100, "1.5x": 70, "1.3x": 50, none: 0}
-    high_wage_cdn_experience: {"2x": 70, "1.5x": 40, "1.3x": 20}
-    factor_cap: 150   # 加拿大工作经验与 job offer 分取较高者，合计上限 150
-    note: "LMIA 取消；job offer 无需 LMIA 亦可计分；官方须评估真实性；high-wage 职业按 NOC 中位薪资分档（≥1.3× 平均中位）"
+    high_wage_points: {"2x": 70, "1.5x": 40, "1.3x": 20}   # 需 ≥12 个月在加 high-wage 职业经验
+    factor_cap: 150            # 单人：工作经验(80) + high-wage(70) 上限
+    factor_cap_spouse: 140     # 配偶：工作经验(70) + high-wage(70) 上限
+    note: "LMIA 取消；job offer 无需 LMIA 亦可计分；官方须评估真实性；high-wage 职业按 NOC 中位薪资分档（≥1.3× 平均中位）——档位自查官方清单页 check-score/high-wage.html"
 
   age:
     single:   {18: 99, 19: 105, "20-29": 110, 30: 105, 31: 99, 32: 94, 33: 88, 34: 83, 35: 77, 36: 72, 37: 66, 38: 61, 39: 55, 40: 50, 41: 39, 42: 28, 43: 17, 44: 6, "45+": 0}

@@ -148,15 +148,22 @@ def calculate(profile: dict, eff: dict, scoring: dict | None = None, as_of: str 
     cdn_years = work_block.get("years_in", {}).get("CA", 0.0) if isinstance(work_block.get("years_in"), dict) else 0.0
     cdn_work_points = scoring["cdn_work_experience"][base].get(_cdn_work_bucket(cdn_years), 0)
 
-    # ---- 2026-11-03 起：劳动力市场整合因子 = 加拿大工作经验与 job offer 取较高者（上限 150）----
+    # ---- 2026-11-03 起：劳动力市场整合因子 = 工作经验(含 high-wage 加分) 与 job offer 取较高者 ----
     job_offer_points = 0
+    high_wage_points = 0
     if regime == "new":
         regime_switch = scoring.get("regime_switch") or {}
         intent = profile.get("intent") or {}
         tier = str(intent.get("job_offer_wage_tier") or "none")
         job_offer_points = regime_switch.get("new_job_offer_points", {}).get(tier, 0)
-        factor = min(max(cdn_work_points, job_offer_points), regime_switch.get("factor_cap", 150))
-        unsupported.append("high-wage 加拿大工作经验加分（70/40/20 分档）——需 NOC 职业级工资数据，v0 未实现")
+        # high-wage 加拿大工作经验加分（需 ≥12 个月在加 high-wage 职业经验；档位用户自查官方清单）
+        if cdn_years >= 1:
+            hw_tier = str(work_block.get("high_wage_tier_CA") or "none")
+            high_wage_points = regime_switch.get("high_wage_points", {}).get(hw_tier, 0)
+        work_factor = cdn_work_points + high_wage_points
+        cap = regime_switch.get("factor_cap_spouse" if has_spouse else "factor_cap", 150)
+        factor = min(max(work_factor, job_offer_points), cap)
+        unsupported.append("high-wage 档位由用户按官方清单页自查（work.high_wage_tier_CA）；官方清单更新以哨兵捕获为准")
         cdn_work_points = factor
     core += cdn_work_points
 
@@ -215,7 +222,8 @@ def calculate(profile: dict, eff: dict, scoring: dict | None = None, as_of: str 
                                "points": sum(_first_lang_points(scoring["language_first"][base], clb_eng[a]) for a in ABILITIES) if first_lang == "english" else 0},
             "cdn_work_experience": {"years": cdn_years, "bucket": _cdn_work_bucket(cdn_years),
                                      "points": cdn_work_points, "regime": regime,
-                                     "job_offer_points": job_offer_points if regime == "new" else None},
+                                     "job_offer_points": job_offer_points if regime == "new" else None,
+                                     "high_wage_points": high_wage_points if regime == "new" else None},
             "spouse_factors": spouse_factors,
             "transferability": transfer,
         },

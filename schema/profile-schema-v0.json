@@ -75,6 +75,10 @@
           "type": "object",
           "description": "按国家的工作年资，如 {\"CA\": 3}；国别计算器按需读取",
           "additionalProperties": { "type": "number", "minimum": 0 }
+        },
+        "high_wage_tier_CA": {
+          "enum": ["none", "2x", "1.5x", "1.3x"],
+          "description": "加拿大 high-wage 职业档位（相对加拿大平均中位薪资）；自查官方 high-wage 清单页（2026-11-03 新政计分项）"
         }
       }
     },

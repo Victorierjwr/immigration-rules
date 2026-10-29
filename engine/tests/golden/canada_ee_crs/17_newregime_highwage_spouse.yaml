@@ -1,0 +1,16 @@
+name: N7_newregime_highwage_2x_spouse
+as_of: "2026-11-05"
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/high-wage.html"
+profile:
+  person:
+    birth_date: "1999-03-14"
+    marital_status: married
+    spouse_profile:
+      highest_degree: bachelor
+      language: {test: ielts, listening: 6.0, reading: 6.0, writing: 6.0, speaking: 6.0}
+  education: {highest_degree: master, country: CN, completed_date: "2015-06-30"}
+  language: {english: {test: ielts, listening: 8.0, reading: 7.0, writing: 7.0, speaking: 7.0}}
+  work: {occupation_title: software engineer, years_related: 5, years_in: {CA: 3}, high_wage_tier_CA: "2x"}
+expected:
+  total: 588
+  sections: {core: 468, spouse_factors: 20, transferability: 100, additional: 0}
