@@ -20,7 +20,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from engine.gap import analyze  # noqa: E402
+from engine.gap import analyze, load_cutoffs  # noqa: E402
 from engine.gates import run_gates  # noqa: E402
 from engine.profile_map import derived  # noqa: E402
 
@@ -133,6 +133,19 @@ def assess_country(country: str, profile: dict, eff: dict, as_of: str | None = N
     results = []
     for rule in rules:
         pathway = rule["pathway"]
+        if rule.get("meta", {}).get("assessment_mode") == "info_layer":
+            # 信息层通路：不做评估，展示官方链接与邀请轮历史
+            rounds = load_cutoffs(ROOT / "rules" / country / "cutoff_history.csv")
+            recent = sorted(rounds, key=lambda r: r["draw_date"], reverse=True)[:5]
+            results.append({
+                "pathway": pathway,
+                "country": country,
+                "status": "info_only",
+                "info": {"pathways": rule["meta"].get("pathways", []), "rounds": recent},
+                "source_url": rule["source_url"],
+                "confidence": confidence(rule, _golden_dirs()),
+            })
+            continue
         if pathway not in CALCULATORS:
             continue  # categories/gates 类规则文件不评估
         failures = run_gates(all_gates(rules), {**profile, "derived": eff})
@@ -216,6 +229,21 @@ def render_markdown(profile: dict, results: list[dict], lang: str = "zh") -> str
     for r in results:
         lines.append(f"## {r['country']} · {r['pathway']}")
         lines.append("")
+        if r["status"] == "info_only":
+            info = r.get("info") or {}
+            lines.append("- ❔ 仅信息层——改革窗口期不做评估，仅整理官方信息")
+            for p in info.get("pathways") or []:
+                lines.append(f"  - {p.get('name', p.get('id'))}：{p.get('official_url', '')}")
+            rounds = info.get("rounds") or []
+            if rounds:
+                lines.append("  - 近期邀请轮：")
+                for rw in rounds:
+                    cut = rw.get("cutoff") if rw.get("cutoff") is not None else "未公布"
+                    inv = rw.get("invitations") if rw.get("invitations") is not None else "?"
+                    lines.append(f"    - {rw['draw_date']}（{rw.get('category') or rw['round_type']}）：邀请 {inv}，cutoff {cut}")
+            lines.append(f"  - {L['source']}：{r['source_url']}")
+            lines.append("")
+            continue
         if r["status"] == "blocked":
             for f in r["reasons"]:
                 lines.append(f"- ❌ **{f['id']}**：{f['fail_output']}")
@@ -274,7 +302,8 @@ def main() -> int:
     eff = derived(profile, ["CA", "JP", "DE", "AU"])
     results = assess_country("canada", profile, eff, as_of=args.as_of) + \
         assess_country("japan", profile, eff, as_of=args.as_of) + \
-        assess_country("germany", profile, eff, as_of=args.as_of)
+        assess_country("germany", profile, eff, as_of=args.as_of) + \
+        assess_country("australia", profile, eff, as_of=args.as_of)
     if args.format == "json":
         print(json.dumps({"profile_summary": {k: v for k, v in profile.items() if k != "person"},
                           "results": results, "lang": args.lang}, ensure_ascii=False, indent=2))

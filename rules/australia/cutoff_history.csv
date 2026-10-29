@@ -1,0 +1,3 @@
+draw_date,round_type,category,invitations,cutoff,country,source_url,notes
+2026-06-04,program,189,10000,65,australia,https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect,SEED-二手来源待官方复核（部分职业低至65分）
+2026-10-15,program,189,,,australia,https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect,SEED-轮次日期漂移（原9/30→10/15）；邀请数与cutoff待复核

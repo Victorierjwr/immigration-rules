@@ -1,0 +1,37 @@
+# ─────────────────────────────────────────────────────────────
+# 澳洲技术移民通路信息层（不做评估）
+# 改革窗口期（TSS→SID、CSOL、NIV、配额与加分连续变动、points test
+# 改革讨论中）——完整评估待改革落地 + 州担保矩阵建模后启用。
+# 本文件只提供通路信息、官方链接与邀请轮历史展示。
+# URL 以首次人工核验为准（Home Affairs 站点 URL 模式）。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: australia_pathways_info
+country: australia
+source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+effective_date: "2026-01-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates: []
+scoring: {}
+meta:
+  assessment_mode: info_layer
+  pathways:
+    - id: subclass_189
+      name: 189 独立技术移民
+      official_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189"
+    - id: subclass_190
+      name: 190 州担保技术移民
+      official_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-nominated-190"
+    - id: subclass_491
+      name: 491 偏远地区担保
+      official_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-work-regional-visa-491"
+    - id: niv_858
+      name: National Innovation Visa（858，NIV）
+      official_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/national-innovation-visa-858"
+  notes: >
+    2026-27 技术移民配额 132,200；偏远地区加分 10→15；NIV 取代 GTI（2024-12）；
+    Skills in Demand 取代 TSS（2024-12）；CSOL 生效。points test 改革仍在讨论，
+    未落地——评估模型待改革后按官方新表重建。SkillSelect 整站 JS 渲染，
+    邀请轮数据仅每周人工核对（见 sentinel/targets.yaml 的 homeaffairs_skillselect）。

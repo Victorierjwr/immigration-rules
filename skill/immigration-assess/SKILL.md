@@ -44,13 +44,13 @@ gates 全过后脚本算分（加拿大 CRS / 日本 HSP / 德国机会卡）。
 | `schema/profile-schema-v0.json` | canonical 画像 schema |
 | `rules/<country>/*.yaml` | 国别规则数据（脚本读取） |
 | `references/output-guidelines.md` | 输出措辞、置信度标记规范 |
-| `references/process/{canada,japan}.md` | 流程与材料清单（按国别加载） |
+| `references/process/{canada,japan,germany,australia}.md` | 流程与材料清单（按国别加载） |
 | `assets/report-template.md` | 报告模板 |
 | `docs/trigger-matrix.md` | 触发语句测试表 |
 
 ## 边界
 
 - 不做个案移民建议——输出条件式信息与转介。
-- 不评估澳洲 NIV/杰出人才、德国机会卡（v1 信息层）：只整理官方链接。
+- 不评估澳洲 189/190/491 与 NIV（改革窗口期，仅信息层）：只整理官方链接与邀请轮历史。
 - 不查实时政策新闻——告知用户哨兵 changelog 在 `docs/changelog.md`。
 - 不做翻译、申诉信、签证预约类请求——明示超出能力范围。

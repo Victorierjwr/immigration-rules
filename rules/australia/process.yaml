@@ -1,0 +1,80 @@
+# ─────────────────────────────────────────────────────────────
+# 澳洲技术移民（189/190/491）流程与准备（四层材料清单）
+# 改革窗口期——流程以官方现行口径为准，points test 改革落地后
+# 需按新表更新；州担保矩阵未建模（190/491 的具体条件以各州为准）。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: australia_pathways_info
+country: australia
+source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+effective_date: "2026-01-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates: []
+scoring: {}
+meta:
+  phase: information
+
+process:
+  stages:
+    - id: skills_assessment
+      name: 职业评估
+      steps: [按职业选择评估机构（VETSESSESS/ACS/EA 等）, 提交学历与工作证明]
+      duration_days: {p50: 90, p90: 180}
+      source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skills-assessment.html"
+    - id: language
+      name: 语言考试
+      steps: [雅思/PTE/托福等, 达签证最低要求]
+      duration_days: {p50: 90, p90: 180}
+      source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/english-language.html"
+    - id: eoi
+      name: SkillSelect 提交 EOI
+      steps: [在线提交意向, 按分数与职业入池排序]
+      duration_days: {p50: 7, p90: 30}
+      source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+    - id: invitation
+      name: 等待邀请（按轮次）
+      steps: [SkillSelect 按轮次发邀请, 邀请轮日期可能调整]
+      duration_days: {p50: 365, p90: 730}
+      source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+    - id: application
+      name: ITA 后递交签证申请
+      steps: [60 天内递交, 体检/无犯罪/材料]
+      duration_days: {p50: 60, p90: 60}
+      source_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189"
+    - id: approval
+      name: 审批与 PR
+      steps: [背景调查, 批准, 登录领 PR 卡]
+      duration_days: {p50: 180, p90: 540}
+      source_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189"
+
+  checklists:
+    - layer: universal
+      items: [护照, 语言成绩, 工作推荐信, 无犯罪证明, 出生公证]
+    - layer: country
+      items: [职业评估报告, EOI 提交记录]
+    - layer: pathway
+      items: [ITA 60 天材料, 体检表, 州担保材料（190/491：按各州要求）]
+    - layer: profile_conditional
+      rule: "if person.marital_status == 'married': 配偶材料（含配偶职业评估/语言）; if person.children > 0: 子女材料; if credentials.skills_assessment.status != 'completed': 提示先完成职业评估"
+
+  fees:
+    - item: 职业评估
+      amount: 600
+      currency: AUD
+      note: 各机构不同（VETSESSESS/ACS 等约 AUD 450-700）——待对机构官网复核
+      source_url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skills-assessment.html"
+    - item: 签证申请费
+      amount: 4890
+      currency: AUD
+      note: 2025-26 起上调——待对 Home Affairs 费用页复核
+      source_url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189"
+
+  common_rejections:
+    - code: skills_assessment_mismatch
+      note: 职业评估与申报职业不符——按 ANZSCO 职业代码精确匹配
+    - code: points_below_invitation_threshold
+      note: 分数未达邀请线——参考 SkillSelect 邀请轮历史
+    - code: state_nomination_conditions
+      note: 州担保条件未满足（190/491）——以各州最新要求为准
