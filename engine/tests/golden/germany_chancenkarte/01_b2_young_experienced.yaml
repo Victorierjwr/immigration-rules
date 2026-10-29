@@ -1,0 +1,10 @@
+name: G1_b2_age30_5y_exp
+source_url: "https://chancenkarte.com/en"
+profile:
+  person: {birth_date: "1996-05-01", marital_status: single}
+  language: {english: {test: none}, other: {german: B2}}
+  work: {occupation_title: engineer, years_related: 5}
+  intent: {target_countries: ["DE"], budget: {max_total: {amount: 20000, currency: EUR}}}
+expected:
+  total: 8
+  sections: {language: 3, experience: 3, age: 2, stay_germany: 0, spouse: 0, recognition: 0}

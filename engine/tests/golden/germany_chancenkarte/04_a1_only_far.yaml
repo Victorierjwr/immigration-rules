@@ -1,0 +1,10 @@
+name: G4_a1_only_age45
+source_url: "https://chancenkarte.com/en"
+profile:
+  person: {birth_date: "1981-01-01", marital_status: single}
+  language: {english: {test: none}, other: {german: A1}}
+  work: {occupation_title: engineer, years_related: 0}
+  intent: {target_countries: ["DE"], budget: {max_total: {amount: 15000, currency: EUR}}}
+expected:
+  total: 0
+  sections: {language: 0, experience: 0, age: 0, stay_germany: 0, spouse: 0, recognition: 0}

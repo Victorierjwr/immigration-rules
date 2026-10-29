@@ -80,6 +80,17 @@ def derived(profile: dict, countries: list[str] | None = None) -> dict:
         spouse_lang = (spouse.get("language") or {}).get("test", "none")
         out["spouse_language_test"] = spouse_lang
 
+    if "DE" in counts:
+        other = (profile.get("language") or {}).get("other") or {}
+        german = str(other.get("german", "")).upper() or None
+        out["german_level"] = german
+        eng = (profile.get("language") or {}).get("english") or {}
+        out["english_overall"] = eng.get("overall")
+        # 前置：德语 A1+ 或英语 B2（IELTS 约 5.5+ 近似）
+        out["german_prereq"] = german in ("A1", "A2", "B1", "B2", "C1") or (
+            eng.get("test") not in (None, "none") and (eng.get("overall") or 0) >= 5.5
+        )
+
     return out
 
 

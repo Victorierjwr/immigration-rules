@@ -1,0 +1,68 @@
+# ─────────────────────────────────────────────────────────────
+# 德国机会卡（Chancenkarte）流程与准备（四层材料清单）
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: germany_chancenkarte
+country: germany
+source_url: "https://chancenkarte.com/en"
+effective_date: "2024-06-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates: []
+scoring: {}
+meta:
+  phase: information
+
+process:
+  stages:
+    - id: self_assess
+      name: 积分自我评估
+      steps: [按官方算分表计算积分, 核对 6 分门槛与语言前置]
+      duration_days: {p50: 7, p90: 14}
+      source_url: "https://chancenkarte.com/en"
+    - id: funds
+      name: 准备资金证明
+      steps: [开立受限账户（Sperrkonto）, 存入约 €13,092/年]
+      duration_days: {p50: 30, p90: 90}
+      source_url: "https://chancenkarte.com/en"
+    - id: application
+      name: 向德国驻外使领馆申请
+      steps: [提交材料, 面试/面签]
+      duration_days: {p50: 45, p90: 90}
+      source_url: "https://chancenkarte.com/en"
+    - id: card
+      name: 获批与在德求职
+      steps: [领取 1 年期机会卡, 在德求职（每周最多 20 小时工作）]
+      duration_days: {p50: 30, p90: 180}
+      source_url: "https://chancenkarte.com/en"
+    - id: transition
+      name: 找到工作后转签证
+      steps: [获得工作合同后申请工作签证/欧盟蓝卡, 机会卡失效]
+      duration_days: {p50: 60, p90: 120}
+      source_url: "https://chancenkarte.com/en"
+
+  checklists:
+    - layer: universal
+      items: [护照, 照片, 申请表]
+    - layer: country
+      items: [语言证明（德语 A1+ 或英语 B2+）, 资金证明（受限账户约 €13,092）, 学历认证（如适用）]
+    - layer: pathway
+      items: [6 分算分表（按官方格式）, 求职计划说明]
+    - layer: profile_conditional
+      rule: "if person.marital_status == 'married': 配偶材料; if person.children > 0: 子女材料; if education.highest_degree == 'phd': 学术研究相关材料（如适用）"
+
+  fees:
+    - item: 机会卡申请
+      amount: 0
+      currency: EUR
+      note: 卡片本身免费（待对官方费用页复核）；主要成本是受限账户资金占用
+      source_url: "https://chancenkarte.com/en"
+
+  common_rejections:
+    - code: points_below_6
+      note: 积分不足 6 分——对照官方算分表逐项补分
+    - code: funds_insufficient
+      note: 受限账户金额不足——按官方数额与家庭规模计算
+    - code: language_prereq_missing
+      note: 语言前置未达——德语 A1+ 或英语 B2+

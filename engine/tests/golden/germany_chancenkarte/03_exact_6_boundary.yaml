@@ -1,0 +1,10 @@
+name: G3_b1_age38_2y_stay_exact6
+source_url: "https://chancenkarte.com/en"
+profile:
+  person: {birth_date: "1988-03-10", marital_status: single}
+  language: {english: {test: none}, other: {german: B1}}
+  work: {occupation_title: engineer, years_related: 2, years_in: {DE: 1}}
+  intent: {target_countries: ["DE"], budget: {max_total: {amount: 13092, currency: EUR}}}
+expected:
+  total: 6
+  sections: {language: 2, experience: 2, age: 1, stay_germany: 1, spouse: 0, recognition: 0}

@@ -1,0 +1,7 @@
+name: G6_blocked_no_language
+expect_blocked: [language_prerequisite]
+profile:
+  person: {birth_date: "1996-05-01", marital_status: single}
+  language: {english: {test: ielts, overall: 4.5, speaking: 4.5, listening: 4.5, reading: 4.5, writing: 4.5}}
+  work: {occupation_title: engineer, years_related: 5}
+  intent: {target_countries: ["DE"], budget: {max_total: {amount: 15000, currency: EUR}}}

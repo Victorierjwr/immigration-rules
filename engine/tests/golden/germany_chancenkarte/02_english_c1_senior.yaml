@@ -1,0 +1,10 @@
+name: G2_english_c1_age40
+source_url: "https://chancenkarte.com/en"
+profile:
+  person: {birth_date: "1986-01-01", marital_status: single}
+  language: {english: {test: ielts, overall: 7.0, speaking: 7.0, listening: 7.5, reading: 7.0, writing: 6.5}}
+  work: {occupation_title: engineer, years_related: 0}
+  intent: {target_countries: ["DE"], budget: {max_total: {amount: 15000, currency: EUR}}}
+expected:
+  total: 1
+  sections: {language: 1, experience: 0, age: 0, stay_germany: 0, spouse: 0, recognition: 0}

@@ -27,6 +27,7 @@ from engine.profile_map import derived  # noqa: E402
 CALCULATORS = {
     "canada_ee_crs": "engine.calculators.canada_ee_crs",
     "japan_hsp_1": "engine.calculators.japan_hsp",
+    "germany_chancenkarte": "engine.calculators.germany_chancenkarte",
 }
 
 DISCLAIMER = {
@@ -152,15 +153,16 @@ def assess_country(country: str, profile: dict, eff: dict, as_of: str | None = N
         scoring = calc_mod.load_scoring()
         result = calc_mod.calculate(profile, eff, scoring, as_of=as_of)
 
-        if country == "japan":
-            # 高度専門職为积分制——无邀请轮 cutoff，按官方门槛判定
-            thresholds = result.get("thresholds") or {"pr_3y": 70, "pr_1y": 80}
+        if country in ("japan", "germany"):
+            # 门槛制通路——无邀请轮 cutoff，按官方门槛判定
+            thresholds = result.get("thresholds") or {}
+            threshold = next(iter(thresholds.values())) if thresholds else 6
             gap = {"status": "OK", "track": result.get("track"),
-                   "note": "积分制通路——无邀请轮 cutoff，按 70/80 分门槛判定"}
-            if result["total"] >= thresholds["pr_3y"]:
-                status, reason_code = "eligible", f"SCORE_OK_TRACK_{result.get('track') or 'below80'}"
+                   "note": f"门槛制通路——无邀请轮 cutoff，按 {threshold} 分门槛判定"}
+            if result["total"] >= threshold:
+                status, reason_code = "eligible", f"SCORE_OK_THRESHOLD_{threshold}"
             else:
-                status, reason_code = "far", "SCORE_BELOW_70"
+                status, reason_code = "far", "SCORE_BELOW_THRESHOLD"
         else:
             gap = analyze(result["total"], country, category=None)
             cat = gap["category"]
@@ -229,11 +231,11 @@ def render_markdown(profile: dict, results: list[dict], lang: str = "zh") -> str
             if r.get("unsupported"):
                 lines.append(f"- ⚠️ {L['unsupported']}：{'；'.join(r['unsupported'])}")
             gap = r.get("gap") or {}
-            if r["country"] == "japan":
+            if r["country"] in ("japan", "germany"):
                 if gap.get("status") == "OK" and gap.get("track") is not None:
-                    lines.append(f"- {L['threshold']}：{L['japan_note']} {L['track']} {gap['track']}")
+                    lines.append(f"- {L['threshold']}：{gap.get('note', '')} {L['track']} {gap['track']}")
                 else:
-                    lines.append(f"- {L['threshold']}：{L['japan_note']}")
+                    lines.append(f"- {L['threshold']}：{gap.get('note', '')}")
             else:
                 cat = gap.get("category") or {}
                 if cat["status"] == "OK":
@@ -271,7 +273,8 @@ def main() -> int:
 
     eff = derived(profile, ["CA", "JP", "DE", "AU"])
     results = assess_country("canada", profile, eff, as_of=args.as_of) + \
-        assess_country("japan", profile, eff, as_of=args.as_of)
+        assess_country("japan", profile, eff, as_of=args.as_of) + \
+        assess_country("germany", profile, eff, as_of=args.as_of)
     if args.format == "json":
         print(json.dumps({"profile_summary": {k: v for k, v in profile.items() if k != "person"},
                           "results": results, "lang": args.lang}, ensure_ascii=False, indent=2))

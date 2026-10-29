@@ -23,6 +23,7 @@ from engine.profile_map import derived, str_keys  # noqa: E402
 CALCULATORS = {
     "canada_ee_crs": "engine.calculators.canada_ee_crs",
     "japan_hsp_1": "engine.calculators.japan_hsp",
+    "germany_chancenkarte": "engine.calculators.germany_chancenkarte",
 }
 
 
@@ -48,7 +49,7 @@ def import_calculator(module: str):
 def run_case(case: dict, pathway: str) -> list[str]:
     errors = []
     profile = case["profile"]
-    eff = derived(profile, ["CA", "JP"])
+    eff = derived(profile, ["CA", "JP", "DE"])
     rule = find_rule(pathway)
     scoring = str_keys(rule.get("scoring") or {})
 

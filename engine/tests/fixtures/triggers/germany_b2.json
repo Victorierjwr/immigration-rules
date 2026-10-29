@@ -1,0 +1,7 @@
+{
+  "person": {"birth_date": "1996-05-01", "citizenship": ["CN"], "marital_status": "single", "children": 0},
+  "education": {"highest_degree": "bachelor", "country": "CN", "completed_date": "2018-06-30"},
+  "language": {"english": {"test": "none"}, "other": {"german": "B2"}},
+  "work": {"occupation_title": "engineer", "years_total": 5, "years_related": 5, "income_annual": {"amount": 60000, "currency": "CNY"}},
+  "intent": {"target_countries": ["DE"], "budget": {"max_total": {"amount": 20000, "currency": "EUR"}}}
+}

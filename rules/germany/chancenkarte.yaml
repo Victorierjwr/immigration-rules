@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────
+# 德国机会卡（Chancenkarte, §20a AufenthG）规则
+# 数值经 2026-10-29 官方门户 chancenkarte.com 核验（Make it in Germany
+# 英文页被反爬拦截，门户为官方在线申请系统）。
+# ⚠ 待复核项见 meta.unsupported（A2/English C1 类目歧义、
+#   短缺职业清单未入库）。门槛 6 分（满分 14），无邀请轮——按门槛判定。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: germany_chancenkarte
+country: germany
+source_url: "https://chancenkarte.com/en"
+effective_date: "2024-06-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates:
+  - id: language_prerequisite
+    test: "derived.german_prereq == true"
+    fail_output: "语言前置未达：机会卡要求德语 A1 以上或英语 B2 以上"
+    source_url: "https://chancenkarte.com/en"
+    remedy_hint: "考德语 A1 或提供英语 B2 成绩（IELTS 约 5.5+）"
+
+  - id: blocked_account
+    test: "intent.budget.max_total.amount >= 13092"
+    fail_output: "资金证明不足：机会卡要求约 €13,092/年（2026 年官方数额）的受限账户证明"
+    source_url: "https://chancenkarte.com/en"
+    remedy_hint: "在 intent.budget.max_total 提供金额（欧元），或先准备受限账户"
+
+scoring:
+  currency: points
+  threshold_eligible: 6
+  max_total: 14
+
+  recognition_partial: 4        # 德国职业资格部分认定——输入字段未入库（unsupported）
+  experience_shortage:          # 短缺职业经验（近 7 年 5 年 / 近 5 年 2 年）
+    "5+": 3
+    "2+": 2
+  language:                     # 语言（互斥取高）：德语 B2=3 / B1=2 / A2=1 / 英语 C1=1
+    b2: 3
+    b1: 2
+    a2: 1
+    english_c1: 1
+  age:                          # 年龄：≤35=2 / 36-39=1
+    "35-": 2
+    "40-": 1
+  stay_germany: 1               # 近 5 年在德居留 ≥6 个月
+  spouse: 1                     # 配偶符合机会卡条件
+
+meta:
+  thresholds: {eligible: 6}
+  validity_note: "有效期 1 年，可延长至最长 3 年；每周最多 20 小时工作"
+  unsupported:
+    - "德国职业资格部分认定（recognition_partial 4 分）：画像 schema 无德国资格认定字段"
+    - "短缺职业清单（短缺职业经验分档的前提）：官方 NOC 等价清单未入库，经验年资按 related 近似"
+    - "英语 C1 精确对照（IELTS 约 7.0+ 近似）；德语 C1 与 B2 同分（上限封顶）"
+    - "配偶条件的详细判定（配偶符合机会卡条件）：v0 仅按已婚/同居计 1 分"

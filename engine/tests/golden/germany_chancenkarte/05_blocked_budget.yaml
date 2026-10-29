@@ -1,0 +1,7 @@
+name: G5_blocked_no_budget
+expect_blocked: [blocked_account]
+profile:
+  person: {birth_date: "1996-05-01", marital_status: single}
+  language: {english: {test: none}, other: {german: B2}}
+  work: {occupation_title: engineer, years_related: 5}
+  intent: {target_countries: ["DE"]}
