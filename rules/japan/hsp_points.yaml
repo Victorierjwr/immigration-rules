@@ -1,0 +1,48 @@
+# ─────────────────────────────────────────────────────────────
+# 日本高度専門職 1 号（ロ：技術・人文知識・国際業務）积分制规则
+# 数值经 2026-10-29 核验（出入国在留管理庁公示算分表 + 二手来源对照）；
+# 特别加算（研究实绩/资格/大学排名等）v0 未支持，见 meta.unsupported。
+# ⚠ pending_changes：最低年收要件拟提高（省令修订预计 26 年度内）。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: japan_hsp_1
+country: japan
+source_url: "https://www.moj.go.jp/isa/index.html"
+effective_date: "2023-04-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+pending_changes:
+  - summary: "入管厅已确定方针：高度専門職最低年收要件（现行 300 万円）将提高，经省令修订、最早 26 年度内（令和 8 年度内）实施（时事通信 2026-10-18、日经 2026-08-14 报道）；J-Skip（年收 2000 万円线）可能连带调整；永住审查同步收紧"
+    source_url: "https://www.moj.go.jp/isa/index.html"
+    announced: "2026-10-18"
+    takes_effect: null
+
+gates:
+  - id: min_income_300man
+    test: "work.income_annual.currency == 'JPY' and work.income_annual.amount >= 3000000"
+    fail_output: "高度専門職（ロ/ハ）最低年收 300 万円未达——以日元计。其他币种请换算为日元后重评"
+    source_url: "https://www.moj.go.jp/isa/index.html"
+    remedy_hint: "提高收入或确认汇率换算；省令修订后本门槛可能提高（见 pending_changes）"
+
+scoring:
+  currency: HSP
+  thresholds: {pr_3y: 70, pr_1y: 80}
+  max_total: 155   # 核验表理论上限（核心维度）
+
+  education: {phd: 30, master: 20, bachelor: 10}
+  foreign_degree_bonus: 10        # 日本の高等教育機関の学位（が取得した学位）
+  years_of_experience: {"3-5": 5, "5-7": 10, "7-10": 15, "10+": 20}
+  age: {"lt30": 15, "30-34": 10, "35-39": 5, "40+": 0}
+  income:  # 万円 ×100 换算；括号内为年龄档
+    lt30:   {"1000+": 40, "900+": 35, "800+": 30, "700+": 25, "600+": 20, "500+": 15, "400+": 10}
+    "30-34": {"1000+": 40, "900+": 35, "800+": 30, "700+": 25, "600+": 20, "500+": 15}
+    "35-39": {"1000+": 40, "900+": 35, "800+": 30, "700+": 25, "600+": 20}
+  japanese: {n1: 15, n2: 10}
+
+meta:
+  unsupported:
+    - "特别加算（研究实绩15/国家资格每项5最高10/革新政策机构10/R&D费用超3%中小企业5/职务相关外国资格5/日本高等教育学位10/尖端成长事业5/世界排名前300大学10/研修5/投资运用业10）——v0 仅核心维度"
+    - "J-Skip（年收2000万円线免积分通道）——信息层，不评估"
+    - "イ（学术）/ハ（经营）两个类别的独立积分表——v0 仅 ロ（技术）"
+    - "大学排名认定名单（法务大臣公告 排名前300）——未入库"
+  info_layer: "J-Skip / J-Find 相关官方链接见 meta"

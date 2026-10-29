@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────────────────────
+# 加拿大 EE 类别轮（category-based selection）元数据
+# 类别资格判定 v0：仅法语类别（NCLC 7 全四项）可自动判；职业列表类
+# （医疗/技工/STEM/教育/交通等）需要 NOC 职业清单——v0 只存清单版本
+# 与官方链接，不内置清单，判定输出「未实现」。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: canada_ee_categories
+country: canada
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+effective_date: "2026-02-18"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates: []
+scoring: {}
+meta:
+  categories:
+    french:
+      eligible_test: "french_nclc7_all_four"      # v0 标记：NCLC 换算未入库，未自动判定
+      criteria_text: "NCLC 7 或以上 四项全达（TCF Canada / TEF Canada）；任一能力 NCLC 6 即不合格"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+    healthcare:
+      requires: "NOC 职业清单（healthcare and social services occupations）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+    trades:
+      requires: "NOC 职业清单（trade occupations）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+    stem:
+      requires: "NOC 职业清单（STEM occupations）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+    education:
+      requires: "NOC 职业清单（education occupations）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+    transport:
+      requires: "NOC 职业清单（transport occupations）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
+    medical_doctors:
+      requires: "加拿大医学专科经历（2026 新增类别）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/02/canada-prioritizes-top-talent-in-2026-immigration-express-entry-categories.html"
+    researchers:
+      requires: "加拿大研究经历（2026 新增类别）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/02/canada-prioritizes-top-talent-in-2026-immigration-express-entry-categories.html"
+  notes: >
+    2026 年类别轮实录：法语轮最活跃（cutoff 420→435 持续走高，曾见 169 历史低点），技工轮次之（476）；
+    STEM 与教育类别 2026 全年 0 轮——gap 分析对无邀请类别输出 CATEGORY_NO_DRAWS 而非估分。

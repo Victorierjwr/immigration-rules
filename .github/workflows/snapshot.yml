@@ -1,0 +1,46 @@
+name: snapshot
+
+on:
+  schedule:
+    - cron: "0 13 * * *"    # 13:00 UTC = 加拿大早间 / 日本晚间
+    - cron: "0 21 * * *"    # 21:00 UTC = 澳洲早间 / 欧洲午间
+  workflow_dispatch: {}
+
+concurrency:
+  group: sentinel-snapshot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r sentinel/requirements.txt
+
+      - name: run sentinel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python sentinel/snapshot.py
+
+      - name: commit snapshots & state
+        run: |
+          git config user.name "sentinel-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add sentinel/ docs/
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "sentinel: snapshots $(date -u +%F)"
+            git push
+          fi

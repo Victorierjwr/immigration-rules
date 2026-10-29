@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "invitation round / cutoff record (schema v0)",
+  "description": "cutoff_history.csv 每行转 JSON 后按本 schema 校验。CI 由 scripts/validate_rules.py 执行转换与校验。cutoff 必须来自官方公开结果页；本年度未邀请的类别不得编造数值。",
+  "type": "object",
+  "required": ["draw_date", "round_type", "country", "source_url"],
+  "additionalProperties": false,
+  "properties": {
+    "draw_date": { "type": "string", "format": "date" },
+    "round_type": {
+      "enum": ["general", "program", "category"],
+      "description": "general=全项目轮；program=CEC/PNP/FST 等项目轮；category=法语/医疗/STEM 等类别轮"
+    },
+    "category": {
+      "type": ["string", "null"],
+      "description": "program 轮填 cec/pnp/fst；category 轮填 french/healthcare/stem/trades/education/transport；general 轮可空"
+    },
+    "invitations": { "type": ["integer", "null"], "minimum": 0 },
+    "cutoff": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1200,
+      "description": "未公布则 null；上限按 CRS 满分 1200"
+    },
+    "country": { "type": "string", "pattern": "^[a-z][a-z_-]{1,31}$" },
+    "source_url": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "notes": { "type": "string" }
+  }
+}

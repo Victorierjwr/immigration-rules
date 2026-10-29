@@ -1,0 +1,7 @@
+{
+  "person": {"birth_date": "1999-03-14", "citizenship": ["CN"], "marital_status": "single", "children": 0},
+  "education": {"highest_degree": "master", "country": "CN", "completed_date": "2015-06-30", "eca_done": true},
+  "language": {"english": {"test": "ielts", "overall": 7.5, "speaking": 7.0, "listening": 8.0, "reading": 7.0, "writing": 7.0}, "other": {"jlpt": "N1"}},
+  "work": {"occupation_title": "software engineer", "years_total": 5, "years_related": 5, "income_annual": {"amount": 5000000, "currency": "JPY"}},
+  "intent": {"target_countries": ["CA", "JP"]}
+}

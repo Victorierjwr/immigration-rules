@@ -1,0 +1,10 @@
+name: F1_single_27_master_clb9_foreign5
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
+profile:
+  person: {birth_date: "1999-03-14", marital_status: single}
+  education: {highest_degree: master, country: CN, completed_date: "2015-06-30"}
+  language: {english: {test: ielts, listening: 8.0, reading: 7.0, writing: 7.0, speaking: 7.0}}
+  work: {occupation_title: software engineer, years_related: 5, years_total: 5}
+expected:
+  total: 469
+  sections: {core: 369, spouse_factors: 0, transferability: 100, additional: 0}

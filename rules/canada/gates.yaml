@@ -1,0 +1,36 @@
+# ─────────────────────────────────────────────────────────────
+# 加拿大 Express Entry 前置门槛（FSW 口径）
+# ⚠ v0 近似说明：1 年连续技术职业经验（TEER 0-3、近 10 年内）按
+#   work.years_related 近似判定；CEC/FST 项目级资格未建模。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: canada_ee_gates
+country: canada
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/eligibility/federal-skilled-workers.html"
+effective_date: "2024-12-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates:
+  - id: language_clb7
+    test: "derived.clb_english_min >= 7"
+    fail_output: "第一官方语言（CLB）未达 7 级——FSW 最低要求。法语路径 NCLC 换算 v0 未支持"
+    source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/eligibility/federal-skilled-workers.html"
+    remedy_hint: "重考 IELTS/CELPIP 或参加语言班；法语申请人请等待 TEF/TCF→NCLC 对照表入库"
+
+  - id: skilled_experience_1y
+    test: "work.years_related >= 1"
+    fail_output: "技术职业经验不足 1 年（FSW 要求近 10 年内连续 1 年 TEER 0-3 经验；v0 按 related 年资近似）"
+    source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/eligibility/federal-skilled-workers.html"
+    remedy_hint: "积累相关工作经验后重新评估"
+
+  - id: eca_required
+    test: "education.eca_done == true"
+    fail_output: "学历认证（ECA）未完成——境外学历进入 EE 池的必经步骤"
+    source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/immigrants/english-french/credential-assessment.html"
+    remedy_hint: "通过 IRCC 指定评估机构（如 WES、ICAS）申请 ECA；赴加拿大完成学业者可豁免"
+
+scoring: {}
+meta:
+  funds_requirement_table: "证明资金金额随家庭规模变化且每年更新——v0 未建模，见官方 proof of funds 页"
+  unsupported: ["settlement funds 门槛（金额表随年份更新，待官方表核验后入库）"]

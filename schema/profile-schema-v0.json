@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "canonical immigration profile (schema v0)",
+  "description": "用户原始输入层。国别派生特征（NOC/CLB/年龄口径等）由引擎映射层从本 schema 推导，不在本文件中存储。",
+  "type": "object",
+  "required": ["person", "education", "language", "work", "intent"],
+  "additionalProperties": false,
+  "properties": {
+    "person": {
+      "type": "object",
+      "required": ["birth_date", "citizenship", "marital_status", "children"],
+      "additionalProperties": false,
+      "properties": {
+        "birth_date": { "type": "string", "format": "date" },
+        "citizenship": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[A-Z]{2}$" },
+          "description": "ISO 3166-1 alpha-2"
+        },
+        "marital_status": {
+          "enum": ["single", "married", "common_law", "separated", "divorced", "widowed"]
+        },
+        "children": { "type": "integer", "minimum": 0 },
+        "spouse_profile": { "$ref": "#/$defs/spouse" }
+      }
+    },
+    "education": {
+      "type": "object",
+      "required": ["highest_degree", "country", "completed_date"],
+      "additionalProperties": false,
+      "properties": {
+        "highest_degree": { "enum": ["phd", "master", "bachelor", "diploma", "other"] },
+        "field": { "type": "string" },
+        "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "completed_date": { "type": "string", "format": "date" },
+        "eca_done": {
+          "type": "boolean",
+          "description": "加拿大 ECA 学历认证是否完成；gates 引用"
+        }
+      }
+    },
+    "language": {
+      "type": "object",
+      "required": ["english"],
+      "additionalProperties": false,
+      "properties": {
+        "english": { "$ref": "#/$defs/english_test" },
+        "french": { "$ref": "#/$defs/french_test" },
+        "other": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "work": {
+      "type": "object",
+      "required": ["occupation_title", "years_total", "income_annual"],
+      "additionalProperties": false,
+      "properties": {
+        "occupation_title": { "type": "string", "minLength": 2 },
+        "years_total": { "type": "number", "minimum": 0 },
+        "years_related": {
+          "type": "number",
+          "minimum": 0,
+          "description": "与职业相关年资；与 years_total 的区分规则由映射层定义并测试"
+        },
+        "income_annual": {
+          "type": "object",
+          "required": ["amount", "currency"],
+          "additionalProperties": false,
+          "properties": {
+            "amount": { "type": "number", "minimum": 0 },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+          }
+        },
+        "years_in": {
+          "type": "object",
+          "description": "按国家的工作年资，如 {\"CA\": 3}；国别计算器按需读取",
+          "additionalProperties": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skills_assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "authority": { "type": "string" },
+            "occupation_code": { "type": "string" },
+            "status": { "enum": ["not_started", "in_progress", "completed"] },
+            "completed_date": { "type": ["string", "null"], "format": "date" }
+          }
+        },
+        "license": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "required": ["target_countries"],
+      "additionalProperties": false,
+      "properties": {
+        "target_countries": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[A-Z]{2}$" }
+        },
+        "job_offer_wage_tier": {
+          "enum": ["none", "2x", "1.5x", "1.3x"],
+          "description": "加拿大 job offer 相对平均中位薪资的分档（2026-11-03 起计分；none=无 offer 或非 high-wage）"
+        },
+        "budget": { "type": "object", "additionalProperties": true },
+        "timeline": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "english_test": {
+      "type": "object",
+      "required": ["test"],
+      "additionalProperties": false,
+      "properties": {
+        "test": { "enum": ["ielts", "celpip", "toefl", "pte", "none"] },
+        "overall": { "type": ["number", "null"] },
+        "speaking": { "type": ["number", "null"] },
+        "listening": { "type": ["number", "null"] },
+        "reading": { "type": ["number", "null"] },
+        "writing": { "type": ["number", "null"] }
+      }
+    },
+    "french_test": {
+      "type": "object",
+      "required": ["test"],
+      "additionalProperties": false,
+      "properties": {
+        "test": { "enum": ["tef", "tcf", "none"] },
+        "speaking": { "type": ["number", "null"] },
+        "listening": { "type": ["number", "null"] },
+        "reading": { "type": ["number", "null"] },
+        "writing": { "type": ["number", "null"] }
+      }
+    },
+    "spouse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "birth_date": { "type": ["string", "null"], "format": "date" },
+        "highest_degree": { "enum": ["phd", "master", "bachelor", "diploma", "other", null] },
+        "language": { "$ref": "#/$defs/english_test" },
+        "years_related": { "type": ["number", "null"], "minimum": 0 },
+        "years_in": {
+          "type": ["object", "null"],
+          "additionalProperties": { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

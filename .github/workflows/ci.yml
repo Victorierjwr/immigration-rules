@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install jsonschema pyyaml
+      # 溯源缺失 / staleness 超限 / schema 违规 → 非零退出即红
+      - run: python scripts/validate_rules.py
+      # 引擎单元测试（gates 表达式 / CLB 换算 / gap 分析）
+      - run: python -m unittest engine.tests.test_engine
+      # 官方算例 golden 回归：规则改动必须全绿
+      - run: python -m engine.tests.run_golden_tests

@@ -1,0 +1,11 @@
+name: J6_phd_jp_10y_29yo_900man_n1
+source_url: "https://www.moj.go.jp/isa/index.html"
+profile:
+  person: {birth_date: "1997-06-01", marital_status: single}
+  education: {highest_degree: phd, country: JP, completed_date: "2023-06-30"}
+  language: {english: {test: none}, other: {jlpt: N1}}
+  work: {occupation_title: researcher, years_related: 10, income_annual: {amount: 9000000, currency: JPY}}
+expected:
+  total: 125
+  sections: {education: 30, jp_degree_bonus: 10, experience: 20, age: 15, income: 35, japanese: 15}
+  track: pr_1y

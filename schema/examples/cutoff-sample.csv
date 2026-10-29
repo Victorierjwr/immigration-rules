@@ -1,0 +1,5 @@
+draw_date,round_type,category,invitations,cutoff,country,source_url,notes
+2026-01-15,general,,3000,501,canada,https://example.com/rounds,SAMPLE fixture - synthetic data
+2026-02-01,program,cec,4000,516,canada,https://example.com/rounds,SAMPLE fixture - synthetic data
+2026-03-05,category,french,1500,435,canada,https://example.com/rounds,SAMPLE fixture - synthetic data
+2026-04-10,category,stem,,,canada,https://example.com/rounds,SAMPLE fixture - no draws this year

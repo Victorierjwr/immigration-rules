@@ -1,0 +1,11 @@
+name: J3_bachelor_4y_32yo_550man_n2
+source_url: "https://www.moj.go.jp/isa/index.html"
+profile:
+  person: {birth_date: "1994-05-20", marital_status: single}
+  education: {highest_degree: bachelor, country: CN, completed_date: "2015-06-30"}
+  language: {english: {test: none}, other: {jlpt: N2}}
+  work: {occupation_title: engineer, years_related: 4, income_annual: {amount: 5500000, currency: JPY}}
+expected:
+  total: 50
+  sections: {education: 10, jp_degree_bonus: 0, experience: 5, age: 10, income: 15, japanese: 10}
+  track: null

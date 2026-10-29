@@ -1,0 +1,97 @@
+# ─────────────────────────────────────────────────────────────
+# 加拿大 Express Entry CRS 打分规则
+# 全部数值经 2026-10-29 官方核验：canada.ca CRS criteria 页（单人/配偶两套表）。
+# ⚠ 现行规则效力至 2026-11-02；2026-11-03 起加拿大工作经验/job offer 加分
+#   全面改版（见 pending_changes）。哨兵已监控 changes.html 的变化页。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: canada_ee_crs
+country: canada
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
+effective_date: "2025-03-19"
+last_verified: "2026-10-29"
+verified_by: "founder"
+pending_changes:
+  - summary: "2026-11-03 起执行「劳动力市场整合因子」：加拿大工作经验按 TEER 0-3 分档（现行表不变：单人 1年40/2年53/3年64/4年72/5年+80；配偶 35/46/56/63/70）基础上，新增 high-wage 职业分档（中位薪资≥2×平均:70分；≥1.5×:40；≥1.3×:20）；工作经验与 job offer 分取较高者，合计最高 150。job offer 取消 LMIA 要求，改按 high-wage 分档（≥2×:100 / ≥1.5×:70 / ≥1.3×:50 / 其他:0）。过渡期邀请轮暂停至系统重算完成（可能约两周）"
+    source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/10/changes-to-express-entry-for-high-wage-occupations.html"
+    announced: "2026-10-16"
+    takes_effect: "2026-11-03"
+
+gates: []   # FSW 前置门槛在 gates.yaml 声明
+
+scoring:
+  currency: CRS
+  max_total: 1200
+
+  # ── 双制切换：2026-11-03 起加拿大工作经验与 job offer 加分重构 ──
+  # 官方 2026-10-16 发布（已核验无修订）；11-02 前按现行制，11-03 起按新制。
+  # 计算器按评估日期（as_of）自动选择，不人工切换。
+  regime_switch:
+    date: "2026-11-03"
+    new_job_offer_points: {"2x": 100, "1.5x": 70, "1.3x": 50, none: 0}
+    high_wage_cdn_experience: {"2x": 70, "1.5x": 40, "1.3x": 20}
+    factor_cap: 150   # 加拿大工作经验与 job offer 分取较高者，合计上限 150
+    note: "LMIA 取消；job offer 无需 LMIA 亦可计分；官方须评估真实性；high-wage 职业按 NOC 中位薪资分档（≥1.3× 平均中位）"
+
+  age:
+    single:   {18: 99, 19: 105, "20-29": 110, 30: 105, 31: 99, 32: 94, 33: 88, 34: 83, 35: 77, 36: 72, 37: 66, 38: 61, 39: 55, 40: 50, 41: 39, 42: 28, 43: 17, 44: 6, "45+": 0}
+    spouse:   {18: 90, 19: 95, "20-29": 100, 30: 95, 31: 90, 32: 85, 33: 80, 34: 75, 35: 70, 36: 65, 37: 60, 38: 55, 39: 50, 40: 45, 41: 35, 42: 25, 43: 15, 44: 5, "45+": 0}
+
+  education:
+    single: {phd: 150, master: 135, bachelor: 120, two_year: 98, one_year: 90, secondary: 30, less_than_secondary: 0}
+    spouse: {phd: 140, master: 126, bachelor: 112, two_year: 91, one_year: 84, secondary: 28, less_than_secondary: 0}
+    # canonical 'diploma' 按 two_year 保守计；'other' 按 secondary 保守计（meta.unsupported 已声明）
+
+  language_first:
+    # 每项能力 CLB → 分数；first 官方语言（单人 4×34 封顶 / 配偶 4×32 封顶）
+    single: {"10+": 34, 9: 31, 8: 23, 7: 17, 6: 9, "4-5": 6, "below4": 0}
+    spouse: {"10+": 32, 9: 29, 8: 22, 7: 16, 6: 8, "4-5": 6, "below4": 0}
+  language_second:
+    single: {"9+": 6, "7-8": 3, "5-6": 1, "below4": 0}
+    spouse: {"9+": 6, "7-8": 3, "5-6": 1, "below4": 0}
+
+  cdn_work_experience:
+    single: {"5+": 80, 4: 72, 3: 64, 2: 53, 1: 40, none: 0}
+    spouse: {"5+": 70, 4: 63, 3: 56, 2: 46, 1: 35, none: 0}
+
+  spouse_factors:
+    education: {phd: 10, master: 10, bachelor: 8, two_year: 7, one_year: 6, secondary: 2, less_than_secondary: 0}
+    language_first: {"9+": 5, "7-8": 3, "5-6": 1, "below4": 0}
+    cdn_work_experience: {"5+": 10, 4: 9, 3: 8, 2: 7, 1: 5, none: 0}
+
+  transferability:
+    max_total: 100
+    edu_x_language:
+      one_year_post_secondary: {one_under_9: 13, all_9_plus: 25}
+      two_credentials_plus:    {one_under_9: 25, all_9_plus: 50}
+      master_professional:     {one_under_9: 25, all_9_plus: 50}
+      doctoral:                {one_under_9: 25, all_9_plus: 50}
+    edu_x_cdn_work:
+      one_year_post_secondary: {one_year: 13, two_plus_years: 25}
+      two_credentials_plus:    {one_year: 25, two_plus_years: 50}
+      master_professional:     {one_year: 25, two_plus_years: 50}
+      doctoral:                {one_year: 25, two_plus_years: 50}
+    foreign_work_x_language:
+      one_two_years: {one_under_9: 13, all_9_plus: 25}
+      three_plus_years: {one_under_9: 25, all_9_plus: 50}
+    foreign_work_x_cdn_work:
+      one_two_years: {one_year: 13, two_plus_years: 25}
+      three_plus_years: {one_year: 25, two_plus_years: 50}
+
+  additional:
+    sibling: 15
+    french:
+      nclc7_all_english_clb4_or_lower: 25
+      nclc7_all_english_clb5_plus: 50
+    cdn_education: {one_two_years: 15, three_plus_years: 30}
+    provincial_nomination: 600
+
+meta:
+  round_types: [general, program, category]
+  categories: [french, healthcare, trades, stem, education, transport, medical_doctors, researchers]
+  unsupported:
+    - "job offer 加分：现行 50/200 值未在官方页确认，且 2026-11-03 起机制改变——v0 不计分，pending_changes 为准"
+    - "法语 NCLC 自动换算（TEF/TCF→NCLC 对照表未入库）——french 加分与法语为第一语言场景 v0 不判"
+    - "加拿大教育 15/30 加分：画像 schema 无加拿大学历字段"
+    - "兄弟姊妹 15 分、省份提名 600 分：schema 无字段"
+    - "CEC/FST 项目级资格判定：v0 gates 仅覆盖 FSW 口径"

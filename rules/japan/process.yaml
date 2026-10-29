@@ -1,0 +1,73 @@
+# ─────────────────────────────────────────────────────────────
+# 日本高度専門職 1 号（ロ）流程与准备（四层材料清单）
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: japan_hsp_1
+country: japan
+source_url: "https://www.moj.go.jp/isa/index.html"
+effective_date: "2023-04-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates: []
+scoring: {}
+meta:
+  phase: information
+
+process:
+  stages:
+    - id: self_assess
+      name: 积分自我评估
+      steps: [按官方算分表计算积分, 核对 70/80 分档与年收门槛]
+      duration_days: {p50: 7, p90: 14}
+      source_url: "https://www.moj.go.jp/isa/index.html"
+    - id: coe
+      name: 在留资格认定证明书（COE）申请
+      steps: [向所属学校/研究机构发起 COE 申请, 提交工作与收入证明]
+      duration_days: {p50: 60, p90: 120}
+      source_url: "https://www.moj.go.jp/isa/applicable/visa/01_00010.html"
+    - id: visa
+      name: 签证申请（驻外使领馆）
+      steps: [提交 COE 与签证材料, 缴费]
+      duration_days: {p50: 21, p90: 60}
+      source_url: "https://www.moj.go.jp/isa/index.html"
+    - id: landing
+      name: 入境与在留卡
+      steps: [入境, 在留卡, 加入住民基本台帳]
+      duration_days: {p50: 7, p90: 30}
+      source_url: "https://www.moj.go.jp/isa/index.html"
+    - id: pr
+      name: 永住许可申请（按积分档位）
+      steps: [70 分=3 年后, 80 分=1 年后申请；提交住民票/纳税证明/履历]
+      duration_days: {p50: 90, p90: 180}
+      source_url: "https://www.moj.go.jp/isa/index.html"
+
+  checklists:
+    - layer: universal
+      items: [护照, 在留卡, 履历书, 雇佣契约书, 学历证明]
+    - layer: country
+      items: [COE, 年收证明（源泉徴収票/所得证明）, 日本语能力证明（JLPT）]
+    - layer: pathway
+      items: [積分計算表（按官方格式）, 所属机关推荐书, 资格证明（如有）]
+    - layer: profile_conditional
+      rule: "if person.marital_status == 'married': 配偶资料; if education.country == 'JP': 日本学位证书; if language.other.jlpt: JLPT 成绩通知"
+
+  fees:
+    - item: 签证费（视国籍/签证类型）
+      amount: 0
+      currency: JPY
+      note: 各使领馆公布不同——以馆方为准，待复核
+      source_url: "https://www.moj.go.jp/isa/index.html"
+    - item: 永住许可申请费
+      amount: 60000
+      currency: JPY
+      note: 2024-06 改定后约 6 万円——待对入管厅告示复核
+      source_url: "https://www.moj.go.jp/isa/index.html"
+
+  common_rejections:
+    - code: income_evidence_insufficient
+      note: 年收证明不足或与申报不符——准备源泉徴収票与课税证明
+    - code: experience_mismatch
+      note: 职历与学历组合不满足 1 号ロ 的「高度专门职」定义
+    - code: language_cert_issue
+      note: JLPT 成绩有效期或等级虚报——以官方成绩通知为准

@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────────────────────
+# 加拿大 Express Entry 流程与准备（四层材料清单）
+# 阶段时限为经验估计（P50/P90），官方不公布逐阶段 SLA——标 ◐ 待复核。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: canada_ee_crs
+country: canada
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html"
+effective_date: "2024-12-01"
+last_verified: "2026-10-29"
+verified_by: "founder"
+
+gates: []
+scoring: {}
+meta:
+  phase: information
+
+process:
+  stages:
+    - id: prep
+      name: 入池前准备
+      steps: [语言考试, 学历认证 ECA, 文档收集]
+      duration_days: {p50: 90, p90: 180}
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/eligibility/federal-skilled-workers.html"
+    - id: pool
+      name: 创建 EE 档案（入池）
+      steps: [IRCC 账户, 填写 profile, 锁定 CRS]
+      duration_days: {p50: 7, p90: 30}
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/submit-profile.html"
+    - id: wait_invitation
+      name: 等待邀请（按轮次）
+      steps: [类别轮每周发生, CRS 达标后自动入池排序]
+      duration_days: {p50: 180, p90: 365}
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/submit-profile/rounds-invitations.html"
+    - id: application
+      name: ITA 后 60 天内递交申请
+      steps: [体检, 指纹, 补充材料, 缴纳费用]
+      duration_days: {p50: 60, p90: 60}
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/application.html"
+    - id: approval
+      name: 审批与 PR 卡
+      steps: [背景调查, 签证批准, 登录领取 PR 卡]
+      duration_days: {p50: 180, p90: 365}
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/application.html"
+
+  checklists:
+    - layer: universal
+      items: [护照, 语言成绩原件, 工作推荐信, 无犯罪证明, 出生公证]
+    - layer: country
+      items: [ECA 报告, 资金证明（按家庭规模）, 定居计划]
+      rule: "资金金额随家庭规模与年度更新——以官方 proof of funds 页为准"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/proof-of-funds.html"
+    - layer: pathway
+      items: [ITA 60 天递交材料, 体检表 IME, 指纹采集, 申请费]
+      rule: "申请费 CAD 950 + PR 权费 CAD 575（2024-04 起；逐年更新待复核）"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/application.html"
+    - layer: profile_conditional
+      rule: "if person.marital_status == 'married': 配偶材料（ECA/语言/体检/无犯罪）; if person.children > 0: 子女材料; if work.years_in.CA > 0: 加拿大工作经历证明（雇主信/T4/税单）"
+
+  fees:
+    - item: ECA 学历认证
+      amount: 200
+      currency: CAD
+      note: 各机构不同（WES/ICAS 等），以机构官网为准——待复核
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/immigrants/english-french/credential-assessment.html"
+    - item: EE 申请费
+      amount: 950
+      currency: CAD
+      note: 待对 IRCC 费用页复核
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/application.html"
+
+  common_rejections:
+    - code: incomplete_documents
+      note: 60 天窗口内材料不全——建议提前备齐
+    - code: employment_inconsistency
+      note: 雇主信与报税记录矛盾——建议保留完整工作证据链
+    - code: funds_insufficient
+      note: 资金证明不足——按官方家庭规模表计算

@@ -1,0 +1,7 @@
+name: G1_blocked_language_clb5
+expect_blocked: [language_clb7]
+profile:
+  person: {birth_date: "1995-01-01", marital_status: single}
+  education: {highest_degree: master, country: CN, completed_date: "2014-06-30", eca_done: true}
+  language: {english: {test: ielts, listening: 5.0, reading: 4.0, writing: 5.0, speaking: 5.0}}
+  work: {occupation_title: engineer, years_related: 6}

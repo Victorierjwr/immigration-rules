@@ -1,0 +1,77 @@
+# ─────────────────────────────────────────────────────────────
+# 哨兵监控目标清单 v0.1
+# 纪律：只读官方公开页；低频；diff 只提 Issue，绝不自动改规则。
+# verified: 2026-10-29 本地 curl 实测；canada.ca 本地网络连接被重置
+# （000/connection reset），其 URL 核验移至 GitHub Actions 首跑——
+# runner 无此网络限制，抓取失败会由连续失败告警自动暴露。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+defaults:
+  parser: generic_diff        # 快照全文 diff；结构化解析器 Phase 1 后按站点补
+  notify: [issue, rss, telegram]
+  min_content_chars: 500      # 归一化文本低于此值视为降级（JS 渲染页）
+  staleness_alert_days: 14    # 连续 14 天抓取失败/降级 → 自动 alert Issue
+
+targets:
+  - id: ircc_ee_rounds
+    country: canada
+    name: IRCC Express Entry rounds of invitations
+    url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/submit-profile/rounds-invitations.html"
+    frequency: daily
+    verified: false
+    keywords: [CRS, cutoff, invitation, round, category, French, healthcare, trade, education, draw, ITA, "levels plan"]
+    notes: >
+      类别轮高频发生（2026 年法语轮 cutoff 已升至 435，STEM/教育全年 0 轮）；
+      2027-29 移民水平计划预计 2026-11 初公布，为首个重点值守窗口。
+      本地网络无法直连 canada.ca，首跑若 404 由告警暴露并人工修正 URL。
+
+  - id: ircc_changes
+    country: canada
+    name: IRCC Express Entry 2026 changes (CRS regime switch)
+    url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/changes.html"
+    frequency: daily
+    verified: true
+    last_verified: "2026-10-29"
+    keywords: ["November 3", "job offer", LMIA, "high-wage", "labour market", points, effective, PIP]
+    notes: >
+      2026-11-03 CRS 新政（劳动力市场整合因子 / LMIA 取消）的实施页。
+      新政落地时此页更新或切换——哨兵捕获后触发 docs/nov3-verification-checklist.md 核对流程。
+      2026-10-29 经 WebFetch 实测可达（本地网络除外，同 ircc_ee_rounds 处理）。
+
+  - id: homeaffairs_skillselect
+    country: australia
+    name: Home Affairs SkillSelect invitation rounds
+    url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect"
+    frequency: manual          # 2026-10-29 实测：整站 Angular JS 渲染，纯 HTTP 归一化文本 0 字符（父页与 invitation-rounds 子页均验证）→ 执行调整规则 3：每周人工核对
+    verified: true
+    last_verified: "2026-10-29"
+    keywords: [invitation, round, 189, 190, 491, points, occupation, ceiling, SkillSelect, visa]
+    notes: >
+      邀请轮日期频繁漂移（2026 年多次改期）。整站 JS 渲染无法纯 HTTP 快照——
+      待 CI 引入 Playwright 渲染器后改回 daily；恢复前每周人工核对一次并记录于 changelog。
+
+  - id: isa_japan
+    country: japan
+    name: 出入国在留管理庁 公告
+    url: "https://www.moj.go.jp/isa/index.html"
+    frequency: daily
+    verified: true
+    last_verified: "2026-10-29"
+    keywords: [高度人材, 高度専門職, ポイント, 年収, 省令, 改正, "J-Skip", 永住, 告示, 申請]
+    notes: >
+      高优先目标：高度専門職最低年收要件（现行 300 万円）拟经省令提高，
+      预计 26 年度内实施（时事 2026-10-18 报道）。省令发布 → 当日 Issue 置顶，
+      触发 WBS 调整规则 5（48h 内更新 rules/japan 发版）。
+      2026-10-29 实测 HTTP 200。
+
+  - id: germany_chancenkarte
+    country: germany
+    name: Make it in Germany — Chancenkarte (opportunity card)
+    url: "https://www.make-it-in-germany.com/en/visa-residence/types/job-search-opportunity-card"
+    frequency: weekly
+    verified: true
+    last_verified: "2026-10-29"
+    keywords: [Chancenkarte, points, threshold, "opportunity card", blocked, account, language, recognition]
+    notes: >
+      规则稳定（6/14 门槛 2026 年不变），每周日快照；Wave 2 启动前仅需保持信息层新鲜。
+      2026-10-29 实测 HTTP 200。

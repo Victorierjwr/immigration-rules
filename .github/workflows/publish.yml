@@ -1,0 +1,57 @@
+name: publish
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  publish:
+    if: github.event.label.name == 'confirmed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install requests pyyaml
+
+      - name: export issue body
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue view "${{ github.event.issue.number }}" --json body -q .body > /tmp/issue-body.md
+
+      - name: publish changelog + rss + telegram
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python sentinel/publish.py --body-file /tmp/issue-body.md
+
+      - name: commit published files
+        run: |
+          git config user.name "sentinel-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "sentinel: publish changelog entry (issue #${{ github.event.issue.number }})"
+            git push
+          fi
+
+      - name: mark published & close
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body "✅ 已发布：changelog / RSS / Telegram。规则数据如需变更请另开 PR。"
+          gh issue close "${{ github.event.issue.number }}" --reason completed

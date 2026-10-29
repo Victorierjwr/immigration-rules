@@ -1,0 +1,11 @@
+name: J1_master_jp_degree_n1_28yo_300man
+source_url: "https://www.moj.go.jp/isa/index.html"
+profile:
+  person: {birth_date: "1998-03-14", marital_status: single}
+  education: {highest_degree: master, country: JP, completed_date: "2023-06-30"}
+  language: {english: {test: none}, other: {jlpt: N1}}
+  work: {occupation_title: engineer, years_related: 1, income_annual: {amount: 3000000, currency: JPY}}
+expected:
+  total: 60
+  sections: {education: 20, jp_degree_bonus: 10, experience: 0, age: 15, income: 0, japanese: 15}
+  track: null

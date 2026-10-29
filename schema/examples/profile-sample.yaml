@@ -1,0 +1,53 @@
+# ─────────────────────────────────────────────────────────────
+# 样例 fixture：canonical 画像 schema v0 的可校验示例，数值为合成数据。
+# ─────────────────────────────────────────────────────────────
+person:
+  birth_date: "1990-05-14"
+  citizenship: ["CN"]
+  marital_status: married
+  children: 0
+  spouse_profile:
+    birth_date: "1992-03-01"
+    highest_degree: bachelor
+    language:
+      test: ielts
+      overall: 6.0
+      speaking: 6.0
+      listening: 6.0
+      reading: 6.0
+      writing: 5.5
+    years_related: 3
+education:
+  highest_degree: master
+  field: computer_science
+  country: CN
+  completed_date: "2015-06-30"
+  eca_done: false
+language:
+  english:
+    test: ielts
+    overall: 6.5
+    speaking: 6.0
+    listening: 7.0
+    reading: 7.0
+    writing: 6.0
+work:
+  occupation_title: software engineer
+  years_total: 8
+  years_related: 7
+  years_in:
+    CA: 0
+  income_annual:
+    amount: 600000
+    currency: CNY
+credentials:
+  skills_assessment:
+    authority: example-authority
+    occupation_code: "0000"
+    status: not_started
+    completed_date: null
+intent:
+  target_countries: ["CA", "JP", "DE"]
+  budget:
+    max_total: { amount: 300000, currency: CNY }
+  timeline: "2y"

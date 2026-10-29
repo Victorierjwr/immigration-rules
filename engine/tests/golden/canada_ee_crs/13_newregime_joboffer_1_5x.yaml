@@ -1,0 +1,12 @@
+name: N3_newregime_2026_11_10_joboffer_1_5x
+as_of: "2026-11-10"
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/10/changes-to-express-entry-for-high-wage-occupations.html"
+profile:
+  person: {birth_date: "1998-11-11", marital_status: single}
+  education: {highest_degree: master, country: CN, completed_date: "2016-06-30"}
+  language: {english: {test: ielts, listening: 8.0, reading: 7.0, writing: 7.0, speaking: 7.0}}
+  work: {occupation_title: software engineer, years_related: 5, years_in: {CA: 2}}
+  intent: {target_countries: ["CA"], job_offer_wage_tier: "1.5x"}
+expected:
+  total: 539
+  sections: {core: 439, spouse_factors: 0, transferability: 100, additional: 0}

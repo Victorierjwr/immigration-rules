@@ -1,0 +1,7 @@
+{
+  "person": {"birth_date": "1995-01-01", "citizenship": ["CN"], "marital_status": "single", "children": 0},
+  "education": {"highest_degree": "master", "country": "CN", "completed_date": "2014-06-30", "eca_done": true},
+  "language": {"english": {"test": "celpip", "overall": 6.5, "speaking": 6.5, "listening": 6.5, "reading": 6.5, "writing": 6.5}},
+  "work": {"occupation_title": "engineer", "years_total": 6, "years_related": 6, "income_annual": {"amount": 500000, "currency": "CNY"}},
+  "intent": {"target_countries": ["CA"]}
+}

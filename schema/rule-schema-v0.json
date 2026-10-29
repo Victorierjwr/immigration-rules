@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "immigration rule file (schema v0)",
+  "description": "每份国别通路规则文件必须整体通过本 schema；溯源四字段缺失即 CI 拒绝。scoring 为自由对象，由引擎解释执行，政策数字只允许出现在这里与 gates 的 test 中。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pathway",
+    "country",
+    "source_url",
+    "effective_date",
+    "last_verified",
+    "verified_by",
+    "gates",
+    "scoring"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 0,
+      "description": "schema 大版本；升版需两名 core maintainer 合签并附迁移说明"
+    },
+    "pathway": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,63}$",
+      "description": "通路标识，如 canada_ee_crs、japan_hsp_1"
+    },
+    "country": {
+      "type": "string",
+      "pattern": "^[a-z][a-z_-]{1,31}$",
+      "description": "国别 slug：canada / japan / germany / australia"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "官方规则页；二手来源不允许作为 source_url"
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date",
+      "description": "本规则现行文本的生效日期；不得晚于今天"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date",
+      "description": "最后人工对照官方原文的日期；>90 天输出降级，>180 天 CI 阻断"
+    },
+    "verified_by": {
+      "type": "string",
+      "minLength": 2,
+      "description": "执行人工核对的 maintainer 标识"
+    },
+    "pending_changes": {
+      "type": "array",
+      "description": "已官方公布但尚未生效的修订；生效后必须删除该块并更新主规则",
+      "items": {
+        "type": "object",
+        "required": ["summary", "source_url", "announced"],
+        "additionalProperties": false,
+        "properties": {
+          "summary": { "type": "string", "minLength": 5 },
+          "source_url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "announced": { "type": "string", "format": "date" },
+          "takes_effect": {
+            "type": ["string", "null"],
+            "format": "date",
+            "description": "官方未公布生效日则填 null"
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "description": "资格前置一票否决层；任一未过即终止该通路评估",
+      "items": {
+        "type": "object",
+        "required": ["id", "test", "fail_output", "source_url"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
+          "test": {
+            "type": "string",
+            "minLength": 3,
+            "description": "布尔表达式，画像 canonical 字段为变量，如 language.english.overall >= 6.0"
+          },
+          "fail_output": {
+            "type": "string",
+            "minLength": 3,
+            "description": "未过时的人读文案模板"
+          },
+          "source_url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "remedy_hint": { "type": "string", "description": "补足路径提示，如官方指定机构链接" }
+        }
+      }
+    },
+    "scoring": {
+      "type": "object",
+      "description": "打分参数区；结构与各通路计算器约定，CI 只校验类型不校验内容"
+    },
+    "meta": {
+      "type": "object",
+      "description": "补充元信息：round_types、categories、lang、max_score 等",
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,10 @@
+name: F9_single_22_bachelor_clb_77_8_foreign3
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
+profile:
+  person: {birth_date: "2004-08-08", marital_status: single}
+  education: {highest_degree: bachelor, country: CN, completed_date: "2024-06-30"}
+  language: {english: {test: ielts, listening: 6.0, reading: 6.0, writing: 6.0, speaking: 6.5}}
+  work: {occupation_title: engineer, years_related: 3}
+expected:
+  total: 342
+  sections: {core: 304, spouse_factors: 0, transferability: 38, additional: 0}

@@ -1,0 +1,10 @@
+name: F7_single_41_phd_clb9_foreign10
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
+profile:
+  person: {birth_date: "1985-02-15", marital_status: single}
+  education: {highest_degree: phd, country: CN, completed_date: "2011-06-30"}
+  language: {english: {test: ielts, listening: 8.0, reading: 7.0, writing: 7.0, speaking: 7.0}}
+  work: {occupation_title: researcher, years_related: 10}
+expected:
+  total: 413
+  sections: {core: 313, spouse_factors: 0, transferability: 100, additional: 0}

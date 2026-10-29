@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────────────────────
+# 样例 fixture：仅用于演示与 CI 校验 schema v0，全部数值为合成数据，
+# 不是任何国家的真实移民规则。真实规则 Phase 2 起放入 rules/。
+# ─────────────────────────────────────────────────────────────
+schema_version: 0
+pathway: example_pathway
+country: canada
+source_url: "https://example.com/official-rules"
+effective_date: "2024-01-01"
+last_verified: "2026-10-29"
+verified_by: "example-maintainer"
+pending_changes:
+  - summary: "示例：某参数已官方公布将修订，尚未生效"
+    source_url: "https://example.com/announcement"
+    announced: "2026-10-01"
+    takes_effect: null
+gates:
+  - id: language_minimum
+    test: "language.english.overall >= 6.0"
+    fail_output: "语言成绩未达到示例底线（6.0），不满足示例通路资格"
+    source_url: "https://example.com/official-rules#language"
+    remedy_hint: "重考或选择其他示例通路"
+  - id: assessment_done
+    test: "credentials.skills_assessment.status == 'completed'"
+    fail_output: "示例职业评估未完成，无法进入打分"
+    source_url: "https://example.com/official-rules#assessment"
+    remedy_hint: "前往示例官方指定机构完成评估"
+scoring:
+  dimensions:
+    - id: age
+      max: 110
+      note: "合成示例"
+    - id: education
+      max: 150
+      note: "合成示例"
+meta:
+  lang: [en, zh]
+  max_score: 1200

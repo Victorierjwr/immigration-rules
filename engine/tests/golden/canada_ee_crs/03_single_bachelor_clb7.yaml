@@ -1,0 +1,10 @@
+name: F3_single_30_bachelor_clb7
+source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
+profile:
+  person: {birth_date: "1996-05-01", marital_status: single}
+  education: {highest_degree: bachelor, country: CN, completed_date: "2013-06-30"}
+  language: {english: {test: ielts, listening: 6.0, reading: 6.0, writing: 6.0, speaking: 6.0}}
+  work: {occupation_title: technician, years_related: 0}
+expected:
+  total: 306
+  sections: {core: 293, spouse_factors: 0, transferability: 13, additional: 0}

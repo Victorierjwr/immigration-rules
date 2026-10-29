@@ -1,0 +1,7 @@
+name: J5_blocked_currency_usd
+expect_blocked: [min_income_300man]
+profile:
+  person: {birth_date: "1995-01-01", marital_status: single}
+  education: {highest_degree: phd, country: CN, completed_date: "2015-06-30"}
+  language: {english: {test: none}, other: {jlpt: N1}}
+  work: {occupation_title: researcher, years_related: 10, income_annual: {amount: 5000000, currency: USD}}

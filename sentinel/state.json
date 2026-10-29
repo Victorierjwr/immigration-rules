@@ -1,0 +1,19 @@
+{
+  "schema_version": 0,
+  "targets": {
+    "ircc_ee_rounds": {
+      "consecutive_failures": 1,
+      "last_error": "ConnectionError: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))",
+      "last_checked": "2026-10-29T00:41:33+00:00"
+    },
+    "isa_japan": {
+      "last_checked": "2026-10-29T00:42:45+00:00",
+      "content_chars": 3114,
+      "consecutive_failures": 0,
+      "degraded": false,
+      "last_hash": "sha256:cae7744b6800fcb24e2be558079ce1941629973f756bf7d45cbcb15cf1e2a50b",
+      "last_snapshot": "sentinel\\snapshots\\isa_japan\\2026-10-29.txt"
+    }
+  },
+  "last_run": "2026-10-29T00:42:47+00:00"
+}
