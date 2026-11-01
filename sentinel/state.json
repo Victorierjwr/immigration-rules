@@ -4,14 +4,14 @@
     "ircc_ee_rounds": {
       "consecutive_failures": 0,
       "last_error": "ConnectionError: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))",
-      "last_checked": "2026-10-31T23:57:32+00:00",
+      "last_checked": "2026-11-01T18:21:45+00:00",
       "content_chars": 3271,
       "degraded": false,
       "last_hash": "sha256:a2e46d019461d1ad1d2661e29f20be83d837e4fb4f7aaee8ab656817dc864b31",
       "last_snapshot": "sentinel/snapshots/ircc_ee_rounds/2026-10-29.txt"
     },
     "isa_japan": {
-      "last_checked": "2026-10-31T23:57:33+00:00",
+      "last_checked": "2026-11-01T18:21:45+00:00",
       "content_chars": 3114,
       "consecutive_failures": 0,
       "degraded": false,
@@ -19,13 +19,28 @@
       "last_snapshot": "sentinel\\snapshots\\isa_japan\\2026-10-29.txt"
     },
     "ircc_changes": {
-      "last_checked": "2026-10-31T23:57:33+00:00",
+      "last_checked": "2026-11-01T18:21:45+00:00",
       "content_chars": 7578,
       "consecutive_failures": 0,
       "degraded": false,
       "last_hash": "sha256:09c97b886bb8c22f3dd5bd5854fd8466699ec9f507c3bcf4697d6daf8651d1e0",
       "last_snapshot": "sentinel/snapshots/ircc_changes/2026-10-29.txt"
+    },
+    "ircc_high_wage": {
+      "last_checked": "2026-11-01T18:21:45+00:00",
+      "content_chars": 10616,
+      "consecutive_failures": 0,
+      "degraded": false,
+      "last_hash": "sha256:9663307de46b16b8f165a8a1d5e52ee1052537f6ac6fe6df5238884f8aae4db6",
+      "last_snapshot": "sentinel/snapshots/ircc_high_wage/2026-11-01.txt"
+    },
+    "germany_chancenkarte": {
+      "last_checked": "2026-11-01T18:21:46+00:00",
+      "content_chars": 93,
+      "consecutive_failures": 1,
+      "degraded": true,
+      "last_error": "normalized content too small: 93 chars（JS 渲染或页面结构变化）"
     }
   },
-  "last_run": "2026-10-31T23:57:33+00:00"
+  "last_run": "2026-11-01T18:21:47+00:00"
 }
