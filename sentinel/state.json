@@ -4,22 +4,23 @@
     "ircc_ee_rounds": {
       "consecutive_failures": 0,
       "last_error": "ConnectionError: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))",
-      "last_checked": "2026-11-01T18:21:45+00:00",
+      "last_checked": "2026-11-02T00:17:45+00:00",
       "content_chars": 3271,
       "degraded": false,
       "last_hash": "sha256:a2e46d019461d1ad1d2661e29f20be83d837e4fb4f7aaee8ab656817dc864b31",
       "last_snapshot": "sentinel/snapshots/ircc_ee_rounds/2026-10-29.txt"
     },
     "isa_japan": {
-      "last_checked": "2026-11-01T18:21:45+00:00",
-      "content_chars": 3114,
+      "last_checked": "2026-11-02T00:17:45+00:00",
+      "content_chars": 3102,
       "consecutive_failures": 0,
       "degraded": false,
-      "last_hash": "sha256:cae7744b6800fcb24e2be558079ce1941629973f756bf7d45cbcb15cf1e2a50b",
-      "last_snapshot": "sentinel\\snapshots\\isa_japan\\2026-10-29.txt"
+      "last_hash": "sha256:4c156569938b2609265f60d58c3800bbaec2b569014395a95c367861476b1844",
+      "last_snapshot": "sentinel/snapshots/isa_japan/2026-11-02.txt",
+      "open_issue": 1
     },
     "ircc_changes": {
-      "last_checked": "2026-11-01T18:21:45+00:00",
+      "last_checked": "2026-11-02T00:17:45+00:00",
       "content_chars": 7578,
       "consecutive_failures": 0,
       "degraded": false,
@@ -42,5 +43,5 @@
       "last_error": "normalized content too small: 93 chars（JS 渲染或页面结构变化）"
     }
   },
-  "last_run": "2026-11-01T18:21:47+00:00"
+  "last_run": "2026-11-02T00:17:49+00:00"
 }
