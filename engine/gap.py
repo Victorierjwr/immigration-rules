@@ -57,6 +57,9 @@ def _latest_ref(rows: list[dict]) -> dict | None:
     }
 
 
+REGIME_SWITCH_DATE = "2026-11-03"   # CRS 新政生效日：此前 cutoff 为旧制分数
+
+
 def analyze(score: int | float, country: str, rows: list[dict] | None = None,
             category: str | None = None, months: int = 12) -> dict:
     if rows is None:
@@ -70,6 +73,9 @@ def analyze(score: int | float, country: str, rows: list[dict] | None = None,
     if cat_ref:
         cat_ref["status"] = "OK"
         cat_ref["gap"] = score - cat_ref["cutoff"] if cat_ref["cutoff"] is not None else None
+        # 新政生效后，旧制 cutoff 与新制得分不可直接对比
+        if cat_ref["latest_draw"]["draw_date"] < REGIME_SWITCH_DATE <= date.today().isoformat():
+            cat_ref["regime_note"] = "该 cutoff 为 2026-11-03 前旧制分数——与新制得分对比仅供参考"
     else:
         cat_ref = {"status": "CATEGORY_NO_DRAWS",
                    "message": f"近 {months} 个月内该类别/通路无邀请轮记录——不估分；请关注官方轮次页"}
@@ -79,6 +85,8 @@ def analyze(score: int | float, country: str, rows: list[dict] | None = None,
     if prog_ref:
         prog_ref["status"] = "OK"
         prog_ref["gap"] = score - prog_ref["cutoff"] if prog_ref["cutoff"] is not None else None
+        if prog_ref["latest_draw"]["draw_date"] < REGIME_SWITCH_DATE <= date.today().isoformat():
+            prog_ref["regime_note"] = "该 cutoff 为 2026-11-03 前旧制分数——与新制得分对比仅供参考"
 
     result = {"category": cat_ref}
     if prog_ref:

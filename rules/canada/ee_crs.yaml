@@ -1,21 +1,17 @@
 # ─────────────────────────────────────────────────────────────
 # 加拿大 Express Entry CRS 打分规则
-# 全部数值经 2026-10-29 官方核验：canada.ca CRS criteria 页（单人/配偶两套表）。
-# ⚠ 现行规则效力至 2026-11-02；2026-11-03 起加拿大工作经验/job offer 加分
-#   全面改版（见 pending_changes）。哨兵已监控 changes.html 的变化页。
+# 全部数值经官方核验（canada.ca CRS criteria 页，单人/配偶两套表）。
+# 2026-11-03 起「劳动力市场整合因子」新政已生效并经核对确认
+# （job offer 100/70/50 分档、high-wage 经验 70/40/20、两者取高、上限 150/140）——
+# 与本文件 regime_switch 段一致；旧制 golden（F 系列）保留作回归基线。
 # ─────────────────────────────────────────────────────────────
 schema_version: 0
 pathway: canada_ee_crs
 country: canada
 source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
-effective_date: "2025-03-19"
-last_verified: "2026-10-29"
+effective_date: "2026-11-03"
+last_verified: "2026-11-09"
 verified_by: "founder"
-pending_changes:
-  - summary: "2026-11-03 起执行「劳动力市场整合因子」：加拿大工作经验按 TEER 0-3 分档（现行表不变：单人 1年40/2年53/3年64/4年72/5年+80；配偶 35/46/56/63/70）基础上，新增 high-wage 职业分档（中位薪资≥2×平均:70分；≥1.5×:40；≥1.3×:20）；工作经验与 job offer 分取较高者，合计最高 150。job offer 取消 LMIA 要求，改按 high-wage 分档（≥2×:100 / ≥1.5×:70 / ≥1.3×:50 / 其他:0）。过渡期邀请轮暂停至系统重算完成（可能约两周）"
-    source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/10/changes-to-express-entry-for-high-wage-occupations.html"
-    announced: "2026-10-16"
-    takes_effect: "2026-11-03"
 
 gates: []   # FSW 前置门槛在 gates.yaml 声明
 
@@ -90,8 +86,12 @@ scoring:
 meta:
   round_types: [general, program, category]
   categories: [french, healthcare, trades, stem, education, transport, medical_doctors, researchers]
+  regime_2026_11_03_note: >
+    新政已于 2026-11-03 生效、2026-11-09 经官方 criteria 页核对确认（job offer 100/70/50 分档、
+    high-wage 经验 70/40/20、两者取高、上限 150/140）——与本文件 regime_switch 段一致；
+    重算期间邀请轮暂停，恢复后新轮次 cutoff 即新制口径。as_of ≥ 2026-11-03 自动走新制。
   unsupported:
-    - "job offer 加分：现行 50/200 值未在官方页确认，且 2026-11-03 起机制改变——v0 不计分，pending_changes 为准"
+    - "旧制（2026-11-02 前）job offer 50/200 值未在官方页确认——旧制 golden 案例不计 job offer"
     - "法语 NCLC 自动换算（TEF/TCF→NCLC 对照表未入库）——french 加分与法语为第一语言场景 v0 不判"
     - "加拿大教育 15/30 加分：画像 schema 无加拿大学历字段"
     - "兄弟姊妹 15 分、省份提名 600 分：schema 无字段"

@@ -270,12 +270,16 @@ def render_markdown(profile: dict, results: list[dict], lang: str = "zh") -> str
                     draw = cat["latest_draw"]
                     lines.append(f"- {L['category_ref']}：最近 {draw['draw_date']}（{draw['category']}）cutoff {cat['cutoff']}，"
                                  f"gap = {cat['gap']}，{L['median']} {cat.get('median_12mo')}")
+                    if cat.get("regime_note"):
+                        lines.append(f"  - ⚠️ {cat['regime_note']}")
                 else:
                     lines.append(f"- {L['category_ref']}：{cat['message']}")
                 general = gap.get("general")
                 if general and general["status"] == "OK":
                     draw = general["latest_draw"]
                     lines.append(f"- {L['program_ref']}：最近 {draw['draw_date']}（{draw['category'] or '全项目'}）cutoff {general['cutoff']}，gap = {general['gap']}")
+                    if general.get("regime_note"):
+                        lines.append(f"  - ⚠️ {general['regime_note']}")
             lines.append(f"- {L['rule_version']}：effective {r['rule_version']['effective_date']} / 核对 {r['rule_version']['last_verified']}　置信度 [{r['confidence']}]")
             lines.append(f"- {L['source']}：{r['source_url']}")
         lines.append("")
@@ -290,6 +294,9 @@ def main() -> int:
     parser.add_argument("--lang", choices=["zh", "en", "ja"], default="zh", help="报告语言（固定标签本地化；规则数据文本保持中文，由 Agent 翻译呈现）")
     parser.add_argument("--as-of", help="评估基准日期 YYYY-MM-DD（默认今天；影响 CRS 双制切换）")
     args = parser.parse_args()
+    if not args.as_of:
+        # 必须默认今天：传 None 会让计算器停留在旧制（2026-11-03 新政生效后的静默错误）
+        args.as_of = date.today().isoformat()
 
     profile = load_profile(Path(args.profile))
     errors = validate_profile(profile)
