@@ -37,6 +37,21 @@ targets:
       2026-11-03 CRS 新政（劳动力市场整合因子 / LMIA 取消）的实施页。
       新政落地时此页更新或切换——哨兵捕获后触发 docs/nov3-verification-checklist.md 核对流程。
       2026-10-30 二次核验：细节无修订，生效日仍为 2026-11-03。
+      教训（2026-11-09 核对）：本次算分表切换发生在 criteria 页而非本页——
+      本页未变，导致哨兵未直接捕获切换；已补 ircc_crs_criteria 目标。
+
+  - id: ircc_crs_criteria
+    country: canada
+    name: IRCC CRS criteria (scoring tables)
+    url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score/crs-criteria.html"
+    frequency: daily
+    verified: true
+    last_verified: "2026-11-09"
+    keywords: [CRS, points, "labour market", "job offer", "high-wage", age, education, CLB, transferability]
+    notes: >
+      算分表所在页——规则库的本体依据。2026-11-03 新政切换就发生在本页
+      （新增劳动力市场整合因子 + job offer 分档），当时未被监控；现已补上。
+      本页变化 = 规则变更信号，优先级最高。
 
   - id: ircc_high_wage
     country: canada

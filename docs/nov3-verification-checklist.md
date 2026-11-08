@@ -10,6 +10,8 @@
 1. 查看 `docs/changelog.md` 与 GitHub Issues 中标签 `sentinel-change` 的 `ircc_changes` 相关条目——新政落地时 changes.html 页面必然变化。
 2. 若无捕获：人工打开 changes.html 与 crs-criteria.html 确认是否已切换（页面可能静默更新，diff 基线为 2026-10-29 快照）。
 
+> 2026-11-09 实战教训：本次算分表切换发生在 criteria 页，而 changes 页未变——只盯 changes 页的哨兵没有直接捕获切换（靠人工核对发现）。已补 `ircc_crs_criteria` 每日目标（targets.yaml）。**规则本体所在的页面必须直接监控**，公告页只是线索。
+
 ## 第二遍：官方实施状态核对（人工，按序）
 
 | # | 检查项 | 通过标准 | 处置 |
