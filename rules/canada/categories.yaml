@@ -9,7 +9,7 @@ pathway: canada_ee_categories
 country: canada
 source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html"
 effective_date: "2026-02-18"
-last_verified: "2026-10-29"
+last_verified: "2026-11-20"
 verified_by: "founder"
 
 gates: []
@@ -40,7 +40,9 @@ meta:
       source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/02/canada-prioritizes-top-talent-in-2026-immigration-express-entry-categories.html"
     researchers:
       requires: "加拿大研究经历（2026 新增类别）"
-      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/news/2026/02/canada-prioritizes-top-talent-in-2026-immigration-express-entry-categories.html"
+      effective_note: "2026-11-17 修正：大学教师/讲师（NOC 41200）的加拿大工作经验与 job offer 可计入由加拿大实体支付的 stipend/grant/bursary/scholarship 等非薪资报酬；中学后教学研究助理（NOC 41201）不再符合本类别"
+      source_url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/changes.html"
   notes: >
     2026 年类别轮实录：法语轮最活跃（cutoff 420→435 持续走高，曾见 169 历史低点），技工轮次之（476）；
     STEM 与教育类别 2026 全年 0 轮——gap 分析对无邀请类别输出 CATEGORY_NO_DRAWS 而非估分。
+    重算暂停（2026-11-03 起）结束后恢复的轮次即为新制口径。

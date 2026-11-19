@@ -24,6 +24,8 @@ targets:
       类别轮高频发生（2026 年法语轮 cutoff 已升至 435，STEM/教育全年 0 轮）；
       2027-29 移民水平计划预计 2026-11 初公布，为首个重点值守窗口。
       本地网络无法直连 canada.ca，首跑若 404 由告警暴露并人工修正 URL。
+      ⚠ 页面「Latest round」区块为 JS 填充——邀请轮恢复时本页快照可能不触发 diff；
+      恢复信号以 ministerial instructions 存档页与新闻为准，并每周人工核对。
 
   - id: ircc_changes
     country: canada
