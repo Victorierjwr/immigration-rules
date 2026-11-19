@@ -1,0 +1,12 @@
+{
+  "name": "immigration-rules 跨国移民资格评估",
+  "short_name": "immi-rules",
+  "description": "本地优先的跨国移民资格评估——画像不出浏览器，引擎与 CLI 同源。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f8",
+  "theme_color": "#0d6a70",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

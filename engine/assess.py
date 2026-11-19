@@ -14,8 +14,10 @@ import sys
 from datetime import date
 from pathlib import Path
 
-import jsonschema
 import yaml
+
+# jsonschema 不做模块级导入：浏览器（Pyodide）环境可能没有它，
+# validate_profile 内部按可用性自动降级到 light 校验。
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -92,10 +94,55 @@ def load_profile(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def validate_profile(profile: dict) -> list[str]:
+def validate_profile(profile: dict) -> tuple[str, list[str]]:
+    """返回 (mode, errors)。jsonschema 可用走完整校验；不可用（浏览器）走 light 精简校验。"""
+    try:
+        import jsonschema  # noqa: F401
+    except ImportError:
+        return "light", light_validate(profile)
     schema = json.loads((ROOT / "schema" / "profile-schema-v0.json").read_text(encoding="utf-8"))
     validator = jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
-    return [e.message for e in validator.iter_errors(profile)]
+    return "schema", [e.message for e in validator.iter_errors(profile)]
+
+
+def light_validate(profile: dict) -> list[str]:
+    """必需字段检查——required 集与 profile-schema-v0 保持同步（改 schema 必改这里）。"""
+    errors = []
+    person = profile.get("person") or {}
+    education = profile.get("education") or {}
+    language = profile.get("language") or {}
+    work = profile.get("work") or {}
+    intent = profile.get("intent") or {}
+    if not person.get("birth_date"): errors.append("person.birth_date 缺失")
+    if not person.get("citizenship"): errors.append("person.citizenship 缺失")
+    if "marital_status" not in person: errors.append("person.marital_status 缺失")
+    if "children" not in person: errors.append("person.children 缺失")
+    if not education.get("highest_degree"): errors.append("education.highest_degree 缺失")
+    if not education.get("country"): errors.append("education.country 缺失")
+    if not education.get("completed_date"): errors.append("education.completed_date 缺失")
+    if "english" not in language: errors.append("language.english 缺失（无成绩可用 test: none）")
+    if not work.get("occupation_title"): errors.append("work.occupation_title 缺失")
+    if "years_total" not in work: errors.append("work.years_total 缺失")
+    if "income_annual" not in work: errors.append("work.income_annual 缺失")
+    if not intent.get("target_countries"): errors.append("intent.target_countries 缺失")
+    return errors
+
+
+def run_assessment(profile: dict, as_of: str | None = None, lang: str = "zh") -> dict:
+    """程序化入口：校验 + 四国评估 + 报告。CLI / Web(Pyodide) / MCP 共用，算分逻辑只有这一份。"""
+    mode, errors = validate_profile(profile)
+    if errors:
+        return {"ok": False, "mode": mode, "errors": errors}
+    if not as_of:
+        # 必须默认今天：传 None 会让计算器停留在旧制（2026-11-03 新政生效后的静默错误）
+        as_of = date.today().isoformat()
+    eff = derived(profile, ["CA", "JP", "DE", "AU"])
+    results = assess_country("canada", profile, eff, as_of=as_of) + \
+        assess_country("japan", profile, eff, as_of=as_of) + \
+        assess_country("germany", profile, eff, as_of=as_of) + \
+        assess_country("australia", profile, eff, as_of=as_of)
+    return {"ok": True, "mode": mode, "as_of": as_of, "results": results,
+            "markdown": render_markdown(profile, results, lang=lang)}
 
 
 def load_rules(country: str) -> dict:
@@ -294,28 +341,21 @@ def main() -> int:
     parser.add_argument("--lang", choices=["zh", "en", "ja"], default="zh", help="报告语言（固定标签本地化；规则数据文本保持中文，由 Agent 翻译呈现）")
     parser.add_argument("--as-of", help="评估基准日期 YYYY-MM-DD（默认今天；影响 CRS 双制切换）")
     args = parser.parse_args()
-    if not args.as_of:
-        # 必须默认今天：传 None 会让计算器停留在旧制（2026-11-03 新政生效后的静默错误）
-        args.as_of = date.today().isoformat()
 
     profile = load_profile(Path(args.profile))
-    errors = validate_profile(profile)
-    if errors:
-        print("画像不符合 canonical 画像 schema：", file=sys.stderr)
-        for e in errors:
+    result = run_assessment(profile, as_of=args.as_of, lang=args.lang)
+    if not result["ok"]:
+        print("画像不符合 canonical 画像 schema（%s 校验）：" % result["mode"], file=sys.stderr)
+        for e in result["errors"]:
             print(f"  - {e}", file=sys.stderr)
         return 2
 
-    eff = derived(profile, ["CA", "JP", "DE", "AU"])
-    results = assess_country("canada", profile, eff, as_of=args.as_of) + \
-        assess_country("japan", profile, eff, as_of=args.as_of) + \
-        assess_country("germany", profile, eff, as_of=args.as_of) + \
-        assess_country("australia", profile, eff, as_of=args.as_of)
     if args.format == "json":
         print(json.dumps({"profile_summary": {k: v for k, v in profile.items() if k != "person"},
-                          "results": results, "lang": args.lang}, ensure_ascii=False, indent=2))
+                          "results": result["results"], "lang": args.lang,
+                          "as_of": result["as_of"], "mode": result["mode"]}, ensure_ascii=False, indent=2))
     else:
-        print(render_markdown(profile, results, lang=args.lang))
+        print(result["markdown"])
     return 0
 
 
